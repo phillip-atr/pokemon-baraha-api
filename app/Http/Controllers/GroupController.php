@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Group as GroupResource;
+use App\Models\Group;
+use App\Repositories\GroupRepository;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+    protected $repository;
+
+    public function __construct(GroupRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        return GroupResource::collection($this->repository->all());
     }
 
     /**
@@ -24,7 +34,10 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return (new GroupResource($this->repository->store($request)))
+            ->additional(['message' => 'Group Created'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -33,9 +46,9 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Group $group)
     {
-        //
+        return new GroupResource($this->repository->find($group));
     }
 
     /**
@@ -45,9 +58,12 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Group $group)
     {
-        //
+        return (new GroupResource($this->repository->update($request, $group)))
+            ->additional(['message' => 'Group Updated'])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -56,8 +72,11 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Group $group)
+    {   
+        return (new GroupResource($this->repository->delete($group)))
+            ->additional(['message' => 'Group Deleted'])
+            ->response()
+            ->setStatusCode(200);
     }
 }

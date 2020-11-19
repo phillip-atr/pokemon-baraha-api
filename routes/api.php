@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ClassController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PokemonController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\TypesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::apiResource('trainers', TrainerController::class);
     Route::apiResource('pokemons', PokemonController::class);
-    Route::apiResource('classes', TrainerController::class);
-    Route::apiResource('types', TrainerController::class);
-    Route::apiResource('groups', TrainerController::class);
+    Route::apiResource('classes', ClassController::class);
+    Route::apiResource('types', TypesController::class);
+    Route::apiResource('groups', GroupController::class);
 });

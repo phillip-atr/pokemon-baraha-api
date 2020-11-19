@@ -14,4 +14,6 @@ class ClassModel extends Model
     protected $fillable = [
         'name'
     ];
+
+    public $timestamps = false;
 }

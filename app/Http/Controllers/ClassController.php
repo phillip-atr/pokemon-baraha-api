@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClassResource;
+use App\Models\ClassModel;
+use App\Repositories\ClassRepository;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
+    protected $repository;
+
+    public function __construct(ClassRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        //
+        return ClassResource::collection($this->repository->all());
     }
     
     /**
@@ -24,7 +34,10 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return (new ClassResource($this->repository->store($request)))
+            ->additional(['message' => 'Class Created'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -33,9 +46,9 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ClassModel $class)
     {
-        //
+        return new ClassResource($this->repository->find($class));
     }
     
     /**
@@ -45,9 +58,12 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ClassModel $class)
     {
-        //
+        return (new ClassResource($this->repository->update($request, $class)))
+            ->additional(['message' => 'Class Updated'])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -56,8 +72,11 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ClassModel $class)
     {
-        //
+        return (new ClassResource($this->repository->delete($class)))
+            ->additional(['message' => 'Class Deleted'])
+            ->response()
+            ->setStatusCode(200);
     }
 }

@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Type as TypeResource;
+use App\Models\Type;
+use App\Repositories\TypeRepository;
 use Illuminate\Http\Request;
 
 class TypesController extends Controller
 {
+    protected $repository;
+
+    public function __construct(TypeRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,7 @@ class TypesController extends Controller
      */
     public function index()
     {
-        //
+        return TypeResource::collection($this->repository->all());
     }
     
     /**
@@ -24,7 +34,10 @@ class TypesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return (new TypeResource($this->repository->store($request)))
+            ->additional(['message' => 'Type Created'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -33,9 +46,9 @@ class TypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Type $type)
     {
-        //
+        return new TypeResource($this->repository->find($type));
     }
     
     /**
@@ -45,9 +58,12 @@ class TypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Type $type)
     {
-        //
+        return (new TypeResource($this->repository->update($request, $type)))
+            ->additional(['message' => 'Type Updated'])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -56,8 +72,11 @@ class TypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Type $type)
     {
-        //
+        return (new TypeResource($this->repository->delete($type)))
+            ->additional(['message' => 'Type Deleted'])
+            ->response()
+            ->setStatusCode(200);
     }
 }
