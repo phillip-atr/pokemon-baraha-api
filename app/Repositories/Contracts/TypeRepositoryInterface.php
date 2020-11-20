@@ -2,15 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface TypeRepositoryInterface
+interface TypeRepositoryInterface extends CRUDRepositoryInterface
 {
-    public function all();
-
-    public function find($id);
-
-    public function store($request);
-
-    public function update($request, $id);
-
-    public function delete($id);
+    //
 }
