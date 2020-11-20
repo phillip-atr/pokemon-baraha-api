@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Contracts;
 
-interface CategoryInterface
+interface ClassRepositoryInterface
 {
     public function all();
 

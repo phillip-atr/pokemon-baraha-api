@@ -22,7 +22,7 @@ class CategoryServiceProvider extends ServiceProvider
 
         foreach ($models as $model) {
             $this->app->bind(
-                "App\Repositories\CategoryRepositoryInterface",
+                "App\Repositories\Contracts\\{$model}RepositoryInterface",
                 "App\Repositories\\{$model}Repository"
             );
         }

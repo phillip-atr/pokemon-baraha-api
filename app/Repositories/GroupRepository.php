@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Group;
-use App\Repositories\CategoryInterface;
+use App\Repositories\Contracts\GroupRepositoryInterface;
 
-class GroupRepository implements CategoryInterface
+class GroupRepository implements GroupRepositoryInterface
 {
     /**
      * Show list of groups

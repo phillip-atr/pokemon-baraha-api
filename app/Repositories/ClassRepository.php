@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\ClassModel;
-use App\Repositories\CategoryInterface;
+use App\Repositories\Contracts\ClassRepositoryInterface;
 
-class ClassRepository implements CategoryInterface
+class ClassRepository implements ClassRepositoryInterface
 {
     /**
      * Show list of classes

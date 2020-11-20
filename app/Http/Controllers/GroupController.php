@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Group as GroupResource;
 use App\Models\Group;
-use App\Repositories\GroupRepository;
+use App\Repositories\Contracts\GroupRepositoryInterface;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
     protected $repository;
 
-    public function __construct(GroupRepository $repository)
+    public function __construct(GroupRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

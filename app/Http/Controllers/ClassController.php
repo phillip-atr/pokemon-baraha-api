@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ClassResource;
 use App\Models\ClassModel;
-use App\Repositories\ClassRepository;
+use App\Repositories\Contracts\ClassRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
     protected $repository;
 
-    public function __construct(ClassRepository $repository)
+    public function __construct(ClassRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

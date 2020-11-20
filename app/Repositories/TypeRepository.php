@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Type;
-use App\Repositories\CategoryInterface;
+use App\Repositories\Contracts\TypeRepositoryInterface;
 
-class TypeRepository implements CategoryInterface
+class TypeRepository implements TypeRepositoryInterface
 {
     /**
      * Show list of types
