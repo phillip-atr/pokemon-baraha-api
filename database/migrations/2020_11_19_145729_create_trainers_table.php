@@ -20,6 +20,7 @@ class CreateTrainersTable extends Migration
             $table->foreignId('type_id')->constrained();
             $table->foreignId('group_id')->constrained();
             $table->string('name');
+            $table->integer('age');
             $table->enum('gender', ['MALE', 'FEMALE']);
             $table->string('avatar')->nullable();
             $table->integer('max_catch')->default(6);

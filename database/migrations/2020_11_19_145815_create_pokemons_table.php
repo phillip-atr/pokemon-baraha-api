@@ -15,6 +15,7 @@ class CreatePokemonsTable extends Migration
     {
         Schema::create('pokemons', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->foreignId('trainer_id')->constrained();
             $table->string('pokemon_id')->unique();
             $table->string('nickname')->nullable();
@@ -24,7 +25,8 @@ class CreatePokemonsTable extends Migration
             $table->index([
                 'id',
                 'trainer_id',
-                'pokemon_id'
+                'pokemon_id',
+                'name'
             ]);
         });
     }
