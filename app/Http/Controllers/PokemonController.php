@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Pokemon as PokemonResource;
+use App\Repositories\Contracts\PokemonRepositoryInterface;
+use App\Models\Pokemon;
 use Illuminate\Http\Request;
 
 class PokemonController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PokemonRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,7 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        //
+        return PokemonResource::collection($this->repository->all());
     }
 
     /**
@@ -24,7 +34,10 @@ class PokemonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return (new PokemonResource($this->repository->store($request)))
+            ->additional(['message' => 'Pokemon Record Created'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -33,9 +46,9 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pokemon $pokemon)
     {
-        //
+        return new PokemonResource($this->repository->find($pokemon));
     }
     
     /**
@@ -45,9 +58,12 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pokemon $pokemon)
     {
-        //
+        return (new PokemonResource($this->repository->update($request, $pokemon)))
+            ->additional(['message' => 'Pokemon Record Updated'])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -56,8 +72,11 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pokemon $pokemon)
     {
-        //
+        return (new PokemonResource($this->repository->delete($pokemon)))
+            ->additional(['message' => 'Pokemon Record Deleted'])
+            ->response()
+            ->setStatusCode(200);
     }
 }

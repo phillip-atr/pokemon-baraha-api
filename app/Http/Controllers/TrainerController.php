@@ -3,9 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repositories\Contracts\TrainerRepositoryInterface;
+use App\Models\Trainer;
+use App\Http\Resources\Trainer as TrainerResource;
 
 class TrainerController extends Controller
 {
+    protected $repository;
+
+    public function __construct(TrainerRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,7 @@ class TrainerController extends Controller
      */
     public function index()
     {
-        //
+        return TrainerResource::collection($this->repository->all());
     }
 
     /**
@@ -24,7 +34,10 @@ class TrainerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return (new TrainerResource($this->repository->store($request)))
+            ->additional(['message' => 'Trainer Record Created'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -33,9 +46,9 @@ class TrainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Trainer $trainer)
     {
-        //
+        return new TrainerResource($this->repository->find($trainer));
     }
     
     /**
@@ -45,9 +58,12 @@ class TrainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Trainer $trainer)
     {
-        //
+        return (new TrainerResource($this->repository->update($request, $trainer)))
+            ->additional(['message' => 'Trainer Record Updated'])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -56,8 +72,11 @@ class TrainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Trainer $trainer)
     {
-        //
+        return (new TrainerResource($this->repository->delete($trainer)))
+            ->additional(['message' => 'Trainer Record Deleted'])
+            ->response()
+            ->setStatusCode(200);
     }
 }
