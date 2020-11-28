@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trainer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,21 +26,25 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login() {
+    public function login()
+    {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Invalid email or password'], 401);
         }
-        
+
         return $this->respondWithToken($token);
     }
 
-    private function respondWithToken($token) {
+    private function respondWithToken($token)
+    {
         return response()->json([
             'token' => $token,
             'access_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'id' => auth()->id(),
+            'trainer_id' => (Trainer::where('user_id', auth()->id())->first())->id
         ]);
     }
 
@@ -48,21 +53,22 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $user = User::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
 
         return response()->json([
             'message' => 'User successfully registered',
@@ -75,7 +81,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
         return response()->json(['message' => 'User successfully logged out']);
     }
@@ -85,12 +92,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return $this->respondWithToken(auth()->refresh());
     }
 
 
-    public function forgot() {
+    public function forgot()
+    {
 
         $credentials = request()->validate(['email' => 'required|email']);
 
@@ -99,7 +108,8 @@ class AuthController extends Controller
         return response()->json(["message" => 'Reset password link sent on your email id.']);
     }
 
-    public function reset() {
+    public function reset()
+    {
 
         $credentials = request()->validate([
             'email' => 'required|email',
@@ -124,7 +134,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth()->user());
     }
 }

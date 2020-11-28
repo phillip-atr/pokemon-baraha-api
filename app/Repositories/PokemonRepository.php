@@ -10,8 +10,11 @@ class PokemonRepository implements PokemonRepositoryInterface
     /**
      * Show list of pokemons
      */
-    public function all()
+    public function all($trainer = null)
     {
+        if ($trainer) {
+            return Pokemon::where('trainer_id', $trainer)->get();
+        }
         return Pokemon::all();
     }
 
@@ -47,5 +50,35 @@ class PokemonRepository implements PokemonRepositoryInterface
     {
         $pokemon->delete();
         return $this->find($pokemon);
+    }
+
+    /**
+     * Show list by filter
+     */
+    public function filter($request)
+    {
+        $pokemon = Pokemon::where('created_at', '!=', 'NULL');
+
+        if (!empty($request->get('trainer_id'))) {
+            $pokemon->where('trainer_id', $request->trainer_id);
+        }
+
+        if (!empty($request->get('search'))) {
+            $pokemon->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+
+        if (!empty($request->get('type'))) {
+            $pokemon->where('type', $request->type);
+        }
+
+        if (!empty($request->get('weakness'))) {
+            $pokemon->where('weakness', $request->weakness);
+        }
+
+        if (!empty($request->get('resistance'))) {
+            $pokemon->where('resistance', $request->resistance);
+        }
+
+        return $pokemon->get();
     }
 }

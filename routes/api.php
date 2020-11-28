@@ -30,6 +30,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
 
+    Route::get('pokemons/filter', [PokemonController::class, 'filter']);
+
     Route::apiResource('trainers', TrainerController::class);
     Route::apiResource('pokemons', PokemonController::class);
     Route::apiResource('classes', ClassController::class);

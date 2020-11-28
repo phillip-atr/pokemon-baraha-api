@@ -14,4 +14,9 @@ class Type extends Model
     ];
 
     public $timestamps = false;
+
+    public function trainer()
+    {
+        return $this->hasMany(Trainer::class);
+    }
 }

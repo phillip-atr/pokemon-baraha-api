@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface CRUDRepositoryInterface 
+interface CRUDRepositoryInterface
 {
     public function all();
 

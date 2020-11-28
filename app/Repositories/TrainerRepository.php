@@ -20,7 +20,7 @@ class TrainerRepository implements TrainerRepositoryInterface
      */
     public function find($trainer)
     {
-        return Trainer::find($trainer);
+        return $trainer;
     }
 
     /**

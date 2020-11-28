@@ -13,9 +13,17 @@ class Pokemon extends Model
 
     protected $fillable = [
         'name',
+        'type',
+        'weakness',
+        'resistance',
         'nickname',
         'pokemon_id',
         'trainer_id',
         'favorite'
     ];
+
+    public function trainer()
+    {
+        return $this->belongsTo(Trainer::class);
+    }
 }

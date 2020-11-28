@@ -50,7 +50,7 @@ class TrainerController extends Controller
     {
         return new TrainerResource($this->repository->find($trainer));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *

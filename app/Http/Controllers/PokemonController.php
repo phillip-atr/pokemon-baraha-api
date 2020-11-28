@@ -21,8 +21,11 @@ class PokemonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('trainer_id')) {
+            return PokemonResource::collection($this->repository->all($request->get('trainer_id')));
+        }
         return PokemonResource::collection($this->repository->all());
     }
 
@@ -50,7 +53,7 @@ class PokemonController extends Controller
     {
         return new PokemonResource($this->repository->find($pokemon));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -78,5 +81,15 @@ class PokemonController extends Controller
             ->additional(['message' => 'Pokemon Record Deleted'])
             ->response()
             ->setStatusCode(200);
+    }
+
+    /**
+     * Display list of Pokemons by trainer
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        return PokemonResource::collection($this->repository->filter($request));
     }
 }

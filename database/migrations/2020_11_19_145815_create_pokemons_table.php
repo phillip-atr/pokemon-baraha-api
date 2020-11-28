@@ -16,6 +16,9 @@ class CreatePokemonsTable extends Migration
         Schema::create('pokemons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('type');
+            $table->string('weakness')->nullable();
+            $table->string('resistance')->nullable();
             $table->foreignId('trainer_id')->constrained();
             $table->string('pokemon_id')->unique();
             $table->string('nickname')->nullable();

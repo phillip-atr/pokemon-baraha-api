@@ -19,4 +19,24 @@ class Trainer extends Model
         'avatar',
         'user_id'
     ];
+
+    public function pokemons()
+    {
+        return $this->hasMany(Pokemon::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(ClassModel::class);
+    }
 }

@@ -14,4 +14,9 @@ class Group extends Model
     ];
 
     public $timestamps = false;
+
+    public function trainer()
+    {
+        return $this->belongsTo(Trainer::class);
+    }
 }
