@@ -51,7 +51,7 @@ class PokemonController extends Controller
      */
     public function show(Pokemon $pokemon)
     {
-        return new PokemonResource($this->repository->find($pokemon));
+        return new PokemonResource($pokemon);
     }
 
     /**
